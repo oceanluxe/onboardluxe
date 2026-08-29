@@ -2,6 +2,8 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { Pool } from "pg";
 import { resolveDatabaseUrl, runtimeIsStrict } from "./env.js";
+import fs from "fs";
+import path from "path";
 
 const globalForDb = globalThis as typeof globalThis & {
   __oceanLuxePool?: Pool;
@@ -81,6 +83,19 @@ async function applyMigrations() {
   await migrate(getDbInstance(), { migrationsFolder: "migrations" });
 }
 
+async function repairMissingHrSchema() {
+  const migrationPath = path.resolve(process.cwd(), "migrations", "0004_repair_missing_hr_schema.sql");
+  const migrationSql = fs.readFileSync(migrationPath, "utf8");
+  await pool.query("BEGIN");
+  try {
+    await pool.query(migrationSql);
+    await pool.query("COMMIT");
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    throw error;
+  }
+}
+
 async function assertSchemaReady() {
   const requiredTables = [
     "hr_agents",
@@ -109,7 +124,12 @@ async function assertSchemaReady() {
 
 export async function ensureDatabase() {
   if (!globalForDb.__oceanLuxeDbInit) {
-    globalForDb.__oceanLuxeDbInit = autoApplyMigrations() ? applyMigrations() : assertSchemaReady();
+    globalForDb.__oceanLuxeDbInit = autoApplyMigrations()
+      ? applyMigrations()
+      : assertSchemaReady().catch(async (error) => {
+        if (!(error instanceof Error) || !error.message.startsWith("Database schema is not initialized.")) throw error;
+        await repairMissingHrSchema();
+      });
   }
 
   return globalForDb.__oceanLuxeDbInit;
