@@ -84,7 +84,7 @@ async function applyMigrations() {
 }
 
 async function repairMissingHrSchema() {
-  const migrationPath = path.resolve(process.cwd(), "migrations", "0004_repair_missing_hr_schema.sql");
+  const migrationPath = path.resolve(import.meta.dirname, "..", "migrations", "0004_repair_missing_hr_schema.sql");
   const migrationSql = fs.readFileSync(migrationPath, "utf8");
   await pool.query("BEGIN");
   try {
