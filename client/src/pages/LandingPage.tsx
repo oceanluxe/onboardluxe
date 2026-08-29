@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { CheckCircle, DollarSign, Users, Briefcase, ChevronRight, Star } from "lucide-react";
+import { CheckCircle, DollarSign, Users, Briefcase, ChevronRight, Star, ArrowUpRight, MapPin } from "lucide-react";
 import luxeLogo from "@assets/luxe-logo.jpg";
 
 const OceanLuxeLogo = ({ size = "md" }: { size?: "sm" | "md" | "lg" }) => {
@@ -119,6 +119,31 @@ export default function LandingPage() {
               <p className="text-sm text-muted-foreground leading-relaxed">{c.desc}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Careers */}
+      <section id="careers" className="py-24 px-6 bg-background">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground mb-3">Build with us</p>
+            <h2 className="text-3xl md:text-4xl font-semibold" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Find your next chapter at Ocean Luxe</h2>
+            <div className="w-12 h-px mx-auto mt-4" style={{ background: "hsl(43,85%,52%)" }} />
+            <p className="max-w-2xl mx-auto mt-5 text-muted-foreground leading-relaxed">We are building a people-first acquisitions team where ambition is supported by practical training, modern systems, and room to grow.</p>
+          </div>
+          <div className="grid lg:grid-cols-2 gap-5 mb-10">
+            {[
+              { title: "Acquisitions Agent", type: "Remote · Commission-based", text: "Build relationships with homeowners, qualify opportunities, and help create win-win deals with a team behind you." },
+              { title: "Senior Acquisitions Agent", type: "Remote · Leadership track", text: "Coach agents, sharpen negotiations, and own the path from qualified lead to signed agreement." },
+            ].map((job) => <div key={job.title} className="group bg-card border border-border rounded-2xl p-6 gold-hover transition-all hover:-translate-y-1">
+              <div className="flex items-start justify-between gap-4"><div><h3 className="text-xl font-semibold" style={{ fontFamily: "'Cormorant Garamond', serif" }}>{job.title}</h3><p className="text-xs uppercase tracking-widest mt-2" style={{ color: "hsl(43,85%,42%)" }}>{job.type}</p></div><ArrowUpRight className="h-5 w-5 text-muted-foreground group-hover:text-foreground transition-colors" /></div>
+              <p className="text-sm text-muted-foreground leading-relaxed mt-5">{job.text}</p>
+              <Link href="/register"><button className="mt-6 text-sm font-semibold flex items-center gap-2" style={{ color: "hsl(43,85%,42%)" }}>Apply for this role <ChevronRight className="h-4 w-4" /></button></Link>
+            </div>)}
+          </div>
+          <div className="rounded-2xl p-7 text-white ol-gradient border" style={{ borderColor: "rgba(212,168,45,0.2)" }}>
+            <div className="grid md:grid-cols-3 gap-6 items-center"><div className="md:col-span-2"><p className="text-xs uppercase tracking-[0.25em] mb-2" style={{ color: "hsl(43,85%,52%)" }}>The Ocean Luxe standard</p><h3 className="text-2xl font-semibold" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Serious about the work. Generous with the support.</h3><p className="text-white/60 text-sm mt-3 leading-relaxed">Expect clear expectations, hands-on feedback, a thoughtful onboarding path, and the tools to turn consistent effort into real opportunity.</p></div><div className="space-y-3 text-sm text-white/75"><div className="flex gap-2 items-center"><MapPin className="h-4 w-4" style={{ color: "hsl(43,85%,52%)" }} /> Remote-first team</div><div className="flex gap-2 items-center"><Users className="h-4 w-4" style={{ color: "hsl(43,85%,52%)" }} /> Mentorship culture</div><div className="flex gap-2 items-center"><CheckCircle className="h-4 w-4" style={{ color: "hsl(43,85%,52%)" }} /> Learn, earn, advance</div></div></div>
+          </div>
         </div>
       </section>
 

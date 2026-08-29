@@ -4,6 +4,7 @@ import { Pool } from "pg";
 import { resolveDatabaseUrl, runtimeIsStrict } from "./env.js";
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 
 const globalForDb = globalThis as typeof globalThis & {
   __oceanLuxePool?: Pool;
@@ -84,7 +85,7 @@ async function applyMigrations() {
 }
 
 async function repairMissingHrSchema() {
-  const migrationPath = path.resolve(import.meta.dirname, "..", "migrations", "0004_repair_missing_hr_schema.sql");
+  const migrationPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "migrations", "0004_repair_missing_hr_schema.sql");
   const migrationSql = fs.readFileSync(migrationPath, "utf8");
   await pool.query("BEGIN");
   try {

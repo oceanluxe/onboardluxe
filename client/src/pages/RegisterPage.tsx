@@ -47,11 +47,11 @@ const OceanLuxeLogo = () => (
 export default function RegisterPage() {
   const [, navigate] = useLocation();
   const { toast } = useToast();
-  const [form, setForm] = useState({ name: "", phone: "" });
+  const [form, setForm] = useState({ name: "", phone: "", email: "", position: "Acquisitions Agent", experience: "", whyOceanLuxe: "" });
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: typeof form) => {
-      const res = await apiRequest("POST", "/api/agents", data);
+      const res = await apiRequest("POST", "/api/agents", { name: data.name, phone: data.phone });
       return res.json();
     },
     onSuccess: (agent) => {
@@ -96,8 +96,8 @@ export default function RegisterPage() {
               className="h-16 w-16 rounded-xl object-cover mx-auto mb-5"
               style={{ boxShadow: "0 0 30px rgba(212,168,45,0.2)" }}
             />
-            <h1 className="text-2xl font-semibold" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Create your agent profile</h1>
-            <p className="text-muted-foreground text-sm mt-1.5 tracking-wide">Step 1 of 6 — takes about 2 minutes</p>
+            <h1 className="text-2xl font-semibold" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Apply to Ocean Luxe</h1>
+            <p className="text-muted-foreground text-sm mt-1.5 tracking-wide">Tell us a little about yourself — onboarding comes next.</p>
           </div>
 
           {/* Form */}
@@ -112,6 +112,24 @@ export default function RegisterPage() {
                 onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                 required
               />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="email" className="tracking-wide text-xs uppercase text-muted-foreground">Email Address</Label>
+              <Input id="email" type="email" placeholder="you@email.com" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="position" className="tracking-wide text-xs uppercase text-muted-foreground">Position of Interest</Label>
+              <select id="position" value={form.position} onChange={e => setForm(f => ({ ...f, position: e.target.value }))} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+                <option>Acquisitions Agent</option><option>Senior Acquisitions Agent</option>
+              </select>
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="experience" className="tracking-wide text-xs uppercase text-muted-foreground">Relevant Experience</Label>
+              <Input id="experience" placeholder="Sales, real estate, customer success..." value={form.experience} onChange={e => setForm(f => ({ ...f, experience: e.target.value }))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="whyOceanLuxe" className="tracking-wide text-xs uppercase text-muted-foreground">Why Ocean Luxe?</Label>
+              <textarea id="whyOceanLuxe" placeholder="Tell us what draws you to the team..." value={form.whyOceanLuxe} onChange={e => setForm(f => ({ ...f, whyOceanLuxe: e.target.value }))} className="min-h-24 w-full rounded-md border border-input bg-background px-3 py-2 text-sm" />
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="phone" className="tracking-wide text-xs uppercase text-muted-foreground">Phone Number <span className="text-destructive">*</span></Label>
@@ -137,7 +155,7 @@ export default function RegisterPage() {
                 {isPending ? (
                   <span className="flex items-center justify-center gap-2"><Loader2 className="h-4 w-4 animate-spin" /> Creating profile...</span>
                 ) : (
-                  "Continue to Onboarding →"
+                  "Submit Application & Continue →"
                 )}
               </button>
             </div>
