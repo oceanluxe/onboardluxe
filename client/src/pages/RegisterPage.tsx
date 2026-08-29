@@ -5,7 +5,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, FileUp } from "lucide-react";
 import { Link } from "wouter";
 import luxeLogo from "@assets/luxe-logo.jpg";
 
@@ -47,7 +47,8 @@ const OceanLuxeLogo = () => (
 export default function RegisterPage() {
   const [, navigate] = useLocation();
   const { toast } = useToast();
-  const [form, setForm] = useState({ name: "", phone: "", email: "", position: "Acquisitions Agent", experience: "", whyOceanLuxe: "" });
+  const initialPosition = new URLSearchParams(window.location.search).get("position") || "Acquisitions Agent";
+  const [form, setForm] = useState({ name: "", phone: "", email: "", position: initialPosition, experience: "", whyOceanLuxe: "", resumeName: "", interviewAnswers: ["", "", ""] });
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: typeof form) => {
@@ -120,12 +121,21 @@ export default function RegisterPage() {
             <div className="space-y-1.5">
               <Label htmlFor="position" className="tracking-wide text-xs uppercase text-muted-foreground">Position of Interest</Label>
               <select id="position" value={form.position} onChange={e => setForm(f => ({ ...f, position: e.target.value }))} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
-                <option>Acquisitions Agent</option><option>Senior Acquisitions Agent</option>
+                <option>Virtual Assistant</option><option>Acquisitions Agent</option><option>Senior Acquisitions Agent</option>
               </select>
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="resume" className="tracking-wide text-xs uppercase text-muted-foreground">Resume</Label>
+              <Input id="resume" type="file" accept=".pdf,.doc,.docx" onChange={e => setForm(f => ({ ...f, resumeName: e.target.files?.[0]?.name || "" }))} />
+              <p className="text-xs text-muted-foreground flex items-center gap-1"><FileUp className="h-3 w-3" /> Resume filename will be included with your application.</p>
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="experience" className="tracking-wide text-xs uppercase text-muted-foreground">Relevant Experience</Label>
               <Input id="experience" placeholder="Sales, real estate, customer success..." value={form.experience} onChange={e => setForm(f => ({ ...f, experience: e.target.value }))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="tracking-wide text-xs uppercase text-muted-foreground">Interview Questions</Label>
+              {["Tell us about your experience and the strengths you would bring to this role.", "Describe a time you solved a problem or took initiative.", "Why are you interested in working with Ocean Luxe?"] .map((question, index) => <div key={question} className="space-y-1"><p className="text-xs text-muted-foreground">{question}</p><textarea value={form.interviewAnswers[index]} onChange={e => setForm(f => ({ ...f, interviewAnswers: f.interviewAnswers.map((answer, i) => i === index ? e.target.value : answer) }))} className="min-h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm" /></div>)}
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="whyOceanLuxe" className="tracking-wide text-xs uppercase text-muted-foreground">Why Ocean Luxe?</Label>

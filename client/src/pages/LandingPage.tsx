@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { CheckCircle, DollarSign, Users, Briefcase, ChevronRight, Star, ArrowUpRight, MapPin } from "lucide-react";
+import { CheckCircle, DollarSign, Users, Briefcase, ChevronRight, Star, ArrowUpRight, MapPin, Bot, FileUp } from "lucide-react";
 import luxeLogo from "@assets/luxe-logo.jpg";
 
 const OceanLuxeLogo = ({ size = "md" }: { size?: "sm" | "md" | "lg" }) => {
@@ -32,14 +32,11 @@ export default function LandingPage() {
             <span className="text-sm text-white/60 hover:text-white transition-colors cursor-pointer tracking-wide">Admin</span>
           </Link>
           <Link href="/register">
-            <button
-              data-testid="nav-join-btn"
-              className="text-sm font-semibold px-5 py-2 rounded-md transition-all tracking-wide"
-              style={{ background: "hsl(43,85%,52%)", color: "#0a0a0a" }}
-            >
-              Join as Agent
+            <button className="text-sm font-semibold px-5 py-2 rounded-md transition-all tracking-wide" style={{ background: "hsl(43,85%,52%)", color: "#0a0a0a" }}>
+              Explore Careers
             </button>
           </Link>
+          <Link href="/register"><span className="text-xs text-white/50 hover:text-white transition-colors cursor-pointer">Agent onboarding</span></Link>
         </div>
       </nav>
 
@@ -133,12 +130,13 @@ export default function LandingPage() {
           </div>
           <div className="grid lg:grid-cols-2 gap-5 mb-10">
             {[
-              { title: "Acquisitions Agent", type: "Remote · Commission-based", text: "Build relationships with homeowners, qualify opportunities, and help create win-win deals with a team behind you." },
-              { title: "Senior Acquisitions Agent", type: "Remote · Leadership track", text: "Coach agents, sharpen negotiations, and own the path from qualified lead to signed agreement." },
+              { title: "Virtual Assistant", type: "Remote · Hourly pay", text: "Support our team with research, organization, CRM updates, and day-to-day operations. Upload your resume and tell us how you work best.", icon: <Bot className="h-5 w-5" /> },
+              { title: "Acquisitions Agent", type: "Remote · Commission-based", text: "Build relationships with homeowners, qualify opportunities, and help create win-win deals with a team behind you.", icon: <Briefcase className="h-5 w-5" /> },
+              { title: "Senior Acquisitions Agent", type: "Remote · Leadership track", text: "Coach agents, sharpen negotiations, and own the path from qualified lead to signed agreement.", icon: <Users className="h-5 w-5" /> },
             ].map((job) => <div key={job.title} className="group bg-card border border-border rounded-2xl p-6 gold-hover transition-all hover:-translate-y-1">
-              <div className="flex items-start justify-between gap-4"><div><h3 className="text-xl font-semibold" style={{ fontFamily: "'Cormorant Garamond', serif" }}>{job.title}</h3><p className="text-xs uppercase tracking-widest mt-2" style={{ color: "hsl(43,85%,42%)" }}>{job.type}</p></div><ArrowUpRight className="h-5 w-5 text-muted-foreground group-hover:text-foreground transition-colors" /></div>
+              <div className="flex items-start justify-between gap-4"><div><div className="mb-3" style={{ color: "hsl(43,85%,42%)" }}>{job.icon}</div><h3 className="text-xl font-semibold" style={{ fontFamily: "'Cormorant Garamond', serif" }}>{job.title}</h3><p className="text-xs uppercase tracking-widest mt-2" style={{ color: "hsl(43,85%,42%)" }}>{job.type}</p></div><ArrowUpRight className="h-5 w-5 text-muted-foreground group-hover:text-foreground transition-colors" /></div>
               <p className="text-sm text-muted-foreground leading-relaxed mt-5">{job.text}</p>
-              <Link href="/register"><button className="mt-6 text-sm font-semibold flex items-center gap-2" style={{ color: "hsl(43,85%,42%)" }}>Apply for this role <ChevronRight className="h-4 w-4" /></button></Link>
+              <Link href={`/register?position=${encodeURIComponent(job.title)}`}><button className="mt-6 text-sm font-semibold flex items-center gap-2" style={{ color: "hsl(43,85%,42%)" }}>Apply for this role <ChevronRight className="h-4 w-4" /></button></Link>
             </div>)}
           </div>
           <div className="rounded-2xl p-7 text-white ol-gradient border" style={{ borderColor: "rgba(212,168,45,0.2)" }}>
