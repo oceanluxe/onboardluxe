@@ -47,6 +47,7 @@ async function buildAll() {
     "lesson-03.html",
     "lesson-04.html",
     "lesson-05.html",
+    "crm-software-guide-book.pdf",
     "app.js",
     "style.css",
     "config.js",
